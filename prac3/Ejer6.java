@@ -21,51 +21,41 @@ public class Ejer6{
 	public static Tupla2<Tupla2<Double>> puntos(LinkedList<Tupla2<Double>> array, int begin, int end){
 			
 		Tupla2<Tupla2<Double>> ret = new Tupla2<Tupla2<Double>>();
-		if (begin == end) {
-      		return new Tupla2<Tupla2<Double>> (array.get(begin),array.get(end));
+		if (begin == end+2) {
+      		return fuerzaBruta (array,end);
     	}
 		if (begin<end){
 			int mid = (begin+end)/2;
 			Tupla2<Tupla2<Double>> a = puntos(array,begin,mid);
 			Tupla2<Tupla2<Double>> b = puntos(array,mid+1,end);
 			Tupla2<Tupla2<Double>> c = cercano (array,begin,mid,end);
+	//		System.out.println(a.toString());
+//			System.out.println(b.toString());
+//			System.out.println(c.toString());
 			ret = minTup ( minTup (a, b) , c);	
 		}
 		return ret;
 	}
-	// raiz (4-4)
+
 	
 	public static Tupla2<Tupla2<Double>> cercano(LinkedList<Tupla2<Double>> array, int begin, int mid, int end) {
 
 		Double dmin = Double.MAX_VALUE;
 		Tupla2<Tupla2<Double>> resultado = new Tupla2<Tupla2<Double>>(new Tupla2<Double>(dmin,dmin), new Tupla2<Double>(dmin,dmin));
-		for (int i=0; i<=mid; i++){
-			for (int j=mid+1; j<=end; j++){
+		for (int i=begin; i<=mid; i++){
+			if ( Math.abs(array.get(i).fst - array.get(mid).fst) < dmin){
 				Double x1 = array.get(i).fst;
-				Double x2 =	array.get(j).fst;
+				Double x2 =	array.get(mid).fst;
 				Double y1 =	array.get(i).snd;
-				Double y2 =	array.get(j).snd;
-				Double d = Math.sqrt( Math.pow((x2-x1),2) + Math.pow((y2-y1),2) );
-				if (d < dmin){
+				Double y2 =	array.get(mid).snd;
+				Double d = Math.sqrt( Math.pow ( (Math.abs(x2-x1) ),2) + Math.pow( (Math.abs(y2-y1)),2) );
+			//	if (d < dmin){ 
 					dmin = d;
-					resultado = new Tupla2<Tupla2<Double>>(array.get(i),array.get(j));
+					resultado = new Tupla2<Tupla2<Double>>(array.get(i),array.get(mid));
 					System.out.println(dmin);
-				}
+			//	}
 			}
 		}
-/* for (int i=mid+1; i<=end; i++){
-			for (int j=i+1; j<=end; j++){
-				Double x1 = array.get(i).fst;
-				Double x2 =	array.get(j).fst;
-				Double y1 =	array.get(i).snd;
-				Double y2 =	array.get(j).snd;
-				Double d = Math.sqrt( Math.pow((x2-x1),2) + Math.pow((y2-y1),2) );
-				if (d < dmin){
-					dmin = d;
-					resultado = new Tupla2<Tupla2<Double>>(array.get(i),array.get(j));
-				}
-			}
-	}*/
 		return resultado;
 	}
 	
@@ -76,7 +66,8 @@ public class Ejer6{
 		Double y1 =	tup1.fst.snd;
 		Double y2 =	tup1.snd.snd;
 		Double d1 = Math.sqrt( Math.pow((x2-x1),2) + Math.pow((y2-y1),2) );
-		
+		System.out.println(tup1.toString());
+		System.out.println(tup2.toString());
 		Double x11 = tup2.fst.fst;
 		Double x22 = tup2.snd.fst;
 		Double y11 = tup2.fst.snd;
@@ -89,5 +80,24 @@ public class Ejer6{
 			return tup1; 
 	}
 
+	public static Tupla2<Tupla2<Double>> fuerzaBruta(LinkedList<Tupla2<Double>> array,int n){
+		
+		Double dmin = Double.MAX_VALUE;
+		Tupla2<Tupla2<Double>> resultado = new Tupla2<Tupla2<Double>>(new Tupla2<Double>(dmin,dmin), new Tupla2<Double>(dmin,dmin));
+		for (int i=0; i<n-1; i++){
+			for (int j=i+1; j<n; j++){
+				Double x1 = array.get(i).fst;
+				Double x2 =	array.get(j).fst;
+				Double y1 =	array.get(i).snd;
+				Double y2 =	array.get(j).snd;
+				Double d = Math.sqrt( Math.pow((x2-x1),2) + Math.pow((y2-y1),2) );
+				if (d < dmin){
+					dmin = d;
+					resultado = new Tupla2<Tupla2<Double>>(array.get(i),array.get(j));
+				}
+			}
+		}
+		return resultado;
+	}
 
 }  
